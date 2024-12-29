@@ -15,61 +15,31 @@ public class NoteController {
 
     @PostMapping
     public ResponseEntity<Note> createNote(@RequestBody Note note) {
-        try {
-            Note createdNote = noteService.createNote(note);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdNote);
-        } catch (IllegalArgumentException e) {
-            Note errorNote = new Note();
-            errorNote.setTitle("Error");
-            errorNote.setContent(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorNote);
-        }
+        Note createdNote = noteService.createNote(note);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(createdNote);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Note> getNoteById(@PathVariable Long id) {
-        try {
-            Note note = noteService.getNoteById(id);
-            return ResponseEntity.ok(note);
-        } catch (ResourceNotFoundException e) {
-            Note errorNote = new Note();
-            errorNote.setTitle("Error");
-            errorNote.setContent(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorNote);
-        }
+        Note note = noteService.getNoteById(id);
+        return ResponseEntity.ok(note);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody Note noteDetails) {
-        try {
-            Note updatedNote = noteService.updateNote(id, noteDetails);
-            return ResponseEntity.ok(updatedNote);
-        } catch (ResourceNotFoundException e) {
-            Note errorNote = new Note();
-            errorNote.setTitle("Error");
-            errorNote.setContent(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorNote);
-        } catch (IllegalArgumentException e) {
-            Note errorNote = new Note();
-            errorNote.setTitle("Error");
-            errorNote.setContent(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorNote);
-        }
+        Note updatedNote = noteService.updateNote(id, noteDetails);
+        return ResponseEntity.ok(updatedNote);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Note> deleteNote(@PathVariable Long id) {
-        try {
-            noteService.deleteNote(id);
-            return ResponseEntity.noContent().build();
-        } catch (ResourceNotFoundException e) {
-            Note errorNote = new Note();
-            errorNote.setTitle("Error");
-            errorNote.setContent(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorNote);
-        }
+    public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
+        noteService.deleteNote(id);
+        return ResponseEntity.noContent().build();
     }
 }
+
 
 
 
